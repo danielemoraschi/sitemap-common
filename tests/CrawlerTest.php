@@ -12,6 +12,9 @@ namespace SiteMap\Test;
 
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use SiteMap\Crawler;
 use SiteMap\Http\Url;
 use SiteMap\Parse\RegexLinkParser;
@@ -25,7 +28,7 @@ class CrawlerTest extends \PHPUnit_Framework_TestCase
 
     public function testCrawler()
     {
-        $baseUrl = new Url('http://asaquattrocento.com');
+        $baseUrl = new Url('http://google.com');
 
         $crawler = new Crawler(
             $baseUrl,
@@ -54,7 +57,7 @@ class CrawlerTest extends \PHPUnit_Framework_TestCase
         $links = $crawler->crawl(1);
 
         $this->assertTrue(count($links) > 0);
-        
+
         $links2 = $crawler2->crawl(2);
         
         $this->assertTrue(count($links2) > count($links));

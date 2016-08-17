@@ -30,9 +30,6 @@ class Url
             throw new \InvalidArgumentException(sprintf('Unable to parse URL: "%s"'), $url);
         }
 
-        if (! isset($parts['scheme']) && ! isset($parts['host'])) {
-            throw new \InvalidArgumentException(sprintf('Invalid URL: "%s"'), $url);
-        }
 
         $this->url = $url;
     }

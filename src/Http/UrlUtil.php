@@ -54,11 +54,23 @@ class UrlUtil
      */
     public static function isRelative($link)
     {
+
         return $link[0] === '/'
             || $link[0] === '#'
             || $link[0] === '?'
             || $link[0].$link[1].$link[2] === '../'
-            || $link[0].$link[1] === './';
+            || $link[0].$link[1] === './'
+            || self::isPathOnly($link);
+    }
+
+    /**
+     * @param $link
+     * @return bool
+     */
+    public static function isPathOnly($link)
+    {
+        $parts = parse_url($link);
+        return count($parts) === 1 && isset($parts['path']);
     }
 
     /**

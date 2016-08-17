@@ -30,7 +30,6 @@ class FileWriter implements Writer
     }
 
     /**
-     * @param $fileName
      * @param $fileContent
      * @return mixed
      */

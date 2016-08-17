@@ -53,10 +53,11 @@ class SiteMapGenerator
 
     /**
      * @param SiteMapUrlCollection $siteMapUrlCollection
+     * @return SiteMapUrlCollection
      */
     public function setCollection(SiteMapUrlCollection $siteMapUrlCollection)
     {
-        $this->collection = $siteMapUrlCollection;
+        return $this->collection = $siteMapUrlCollection;
     }
 
     /**
@@ -70,6 +71,7 @@ class SiteMapGenerator
 
     /**
      * @param array $urls
+     * @return $this
      */
     public function add(array $urls = array())
     {
@@ -77,6 +79,8 @@ class SiteMapGenerator
         foreach ($urls as $siteMapUrl) {
             $this->addSiteMapUrl($siteMapUrl);
         }
+
+        return $this;
     }
 
     /**

@@ -89,8 +89,9 @@ class UrlUtilTest extends \PHPUnit_Framework_TestCase
         return [
             ['http://google.com', 'http://google.com', false],
             ['https://google.com', 'https://google.com', false],
-            ['google.com', 'google.com', false],
-            ['app.google.com', 'app.google.com', false],
+            
+            ['google.com', 'http://google.com/google.com', true],
+            ['app.google.com', 'http://google.com/app.google.com', true],
 
             ['//google.com', 'http://google.com', true],
             ['//app.google.com', 'http://app.google.com', true],

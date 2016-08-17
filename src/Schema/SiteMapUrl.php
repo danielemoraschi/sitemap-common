@@ -45,7 +45,7 @@ class SiteMapUrl
     public function __construct(Url $url, $frequency, $priority)
     {
         $this->url = $url;
-        $this->priority = number_format($priority, 1);
+        $this->priority = abs(number_format($priority, 1));
         $this->setFrequency($frequency);
     }
 

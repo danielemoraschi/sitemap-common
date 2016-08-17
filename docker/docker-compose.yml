@@ -1,0 +1,11 @@
+version: '2'
+services:
+
+    php:
+      build: ./containers/php
+      image: symfony/console
+      working_dir: /data
+      privileged: true
+      volumes:
+        - /tmp/composer:/root/.composer
+        - ../:/data

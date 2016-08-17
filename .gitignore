@@ -1,9 +1,3 @@
 vendor/
-phpunit.xml
 .idea/
 build/
-containers/
-php
-phpunit
-composer
-docker-compose.yml

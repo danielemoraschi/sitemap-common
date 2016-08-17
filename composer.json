@@ -1,0 +1,34 @@
+{
+    "name": "dmoraschi/sitemap-common",
+    "type": "library",
+    "description": "sitemap-common",
+    "keywords": [],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniele Moraschi",
+            "email": "daniele.moraschi@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6",
+        "doctrine/collections": "v1.3.*",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "satooshi/php-coveralls": "dev-master",
+        "phpunit/phpunit": "4.*@stable",
+        "mockery/mockery": "@stable"
+    },
+    "autoload": {
+        "psr-4": {
+            "SiteMap\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SiteMap\\Test\\": "tests/"
+        }
+    }
+}
+

@@ -17,12 +17,12 @@ use SiteMap\Schema\SiteMapUrlCollection;
 class XmlTemplate implements Template
 {
 
-    const HEADER = <<<HTML
+    const TEMPLATE = <<<HTML
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\n
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\n{{entry}}</urlset>
 HTML;
 
     const ENTRY = <<<HTML
@@ -31,10 +31,6 @@ HTML;
         <changefreq>{{frequency}}</changefreq>
         <priority>{{priority}}</priority>
     </url>\n
-HTML;
-
-    const FOOTER = <<<HTML
-</urlset>
 HTML;
 
     /**
@@ -51,8 +47,8 @@ HTML;
                 self::ENTRY
             );
         }
-        
-        return self::HEADER . $output . self::FOOTER;
+
+        return $this->replace(array('{{entry}}'), array($output), self::TEMPLATE);
     }
 
     /**

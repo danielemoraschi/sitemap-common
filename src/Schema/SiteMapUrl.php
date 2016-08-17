@@ -87,7 +87,7 @@ class SiteMapUrl
                 break;
             default:
                 throw new \InvalidArgumentException(
-                    sprintf('Invalid frequency "%s" for URL "%s"', $this->url->getWebUrl(), $frequency)
+                    sprintf('Invalid frequency "%s" for URL "%s"', $frequency, $this->url->getWebUrl())
                 );
         }
     }

@@ -36,7 +36,15 @@ class UrlUtil
      */
     public static function getAbsoluteLink(Url $baseUrl, $link)
     {
-        if (self::isSlashed($link)) {
+        if (! $link) {
+            return $baseUrl->getWebUrl();
+        }
+
+        if (self::isSingleSlashed($link)) {
+            return self::addSchemaAndHost($baseUrl, $link);
+        }
+
+        if (self::isDoubleSlashed($link)) {
             return self::addSchema($baseUrl, $link);
         }
         
@@ -54,13 +62,13 @@ class UrlUtil
      */
     public static function isRelative($link)
     {
-
-        return $link[0] === '/'
-            || $link[0] === '#'
+        return $link && ($link[0] === '#'
             || $link[0] === '?'
-            || $link[0].$link[1].$link[2] === '../'
-            || $link[0].$link[1] === './'
-            || self::isPathOnly($link);
+            || (strlen($link) > 3 && $link[0].$link[1].$link[2] === '../')
+            || (strlen($link) > 2 && $link[0].$link[1] === './')
+            || self::isPathOnly($link)
+            || self::isSingleSlashed($link)
+            || self::isDoubleSlashed($link));
     }
 
     /**
@@ -74,11 +82,18 @@ class UrlUtil
     }
 
     /**
-     * @TODO Improve this, definitely not the most elegant way.
      * @param $link
      * @return bool
      */
-    public static function isSlashed($link) {
+    public static function isSingleSlashed($link) {
+        return (! self::isDoubleSlashed($link)) && $link[0] === '/';
+    }
+
+    /**
+     * @param $link
+     * @return bool
+     */
+    public static function isDoubleSlashed($link) {
         return strlen($link) > 1 && $link[0].$link[1] === '//';
     }
 
@@ -100,5 +115,15 @@ class UrlUtil
     public static function addSchema(Url $baseUrl, $partial)
     {
         return $baseUrl->getSchema() .':'. $partial;
+    }
+
+    /**
+     * @param Url $baseUrl
+     * @param $partial
+     * @return string
+     */
+    public static function addSchemaAndHost(Url $baseUrl, $partial)
+    {
+        return $baseUrl->getSchema() .'://'. $baseUrl->getHost() .'/'. ltrim($partial, '/');
     }
 }

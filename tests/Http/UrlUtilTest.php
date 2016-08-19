@@ -89,7 +89,7 @@ class UrlUtilTest extends \PHPUnit_Framework_TestCase
         return [
             ['http://google.com', 'http://google.com', false],
             ['https://google.com', 'https://google.com', false],
-            
+
             ['google.com', 'http://google.com/google.com', true],
             ['app.google.com', 'http://google.com/app.google.com', true],
 
@@ -107,4 +107,32 @@ class UrlUtilTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    /**
+     * @dataProvider baseRelativeExpectedProvider
+     *
+     * @param $base
+     * @param $relative
+     * @param $expected
+     */
+    public function testBaseRelativeVsExpectedLink($base, $relative, $expected)
+    {
+        $this->assertEquals(
+            UrlUtil::getAbsoluteLink(new Url($base), $relative),
+            $expected
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function baseRelativeExpectedProvider()
+    {
+        return [
+            ['http://google.com/sub', '/sub2', 'http://google.com/sub2'],
+            ['http://google.com/sub/sub1', '/sub2', 'http://google.com/sub2'],
+            ['http://google.com/sub/sub1', '//sub2', 'http://sub2'],
+            ['http://google.com/sub/sub1', './sub2', 'http://google.com/sub/sub1/./sub2'],
+            ['http://google.com/sub/sub1', '', 'http://google.com/sub/sub1'],
+        ];
+    }
 }

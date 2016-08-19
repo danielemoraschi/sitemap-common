@@ -79,7 +79,7 @@ class UrlUtil
      * @return bool
      */
     public static function isSlashed($link) {
-        return $link[0].$link[1] === '//';
+        return strlen($link) > 1 && $link[0].$link[1] === '//';
     }
 
     /**

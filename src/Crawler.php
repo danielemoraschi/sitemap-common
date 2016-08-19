@@ -125,9 +125,17 @@ class Crawler
         }
 
         $linksCollection = call_user_func_array('array_merge', $linksCollection);
+        return $this->getUrlCollection($linksCollection);
+    }
 
+    /**
+     * @param array $links
+     * @return array
+     */
+    protected function getUrlCollection(array $links = array())
+    {
         return array_map(function($webUrl) {
             return new Url($webUrl);
-        }, array_unique($linksCollection));
+        }, array_unique($links));
     }
 }

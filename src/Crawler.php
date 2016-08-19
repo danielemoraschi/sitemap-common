@@ -105,27 +105,21 @@ class Crawler
      * @param $maxDeep
      * @return array|mixed
      */
-    public function crawl($maxDeep)
+    public function crawl($maxDeep = 1)
     {
-        $deepness = 1;
-        $linksCollection = array();
+        $deepness = 0;
+        $linksCollection = array_fill(0, $maxDeep+1, []);
 
-        $linksCollection[$deepness] = $this->visit(
-            new WebResource($this->baseUrl, $this->httpClient)
-        );
+        $linksCollection[0] = array($this->baseUrl->getWebUrl());
 
         while ($deepness < $maxDeep) {
             $deepness++;
-            $linksCollection[$deepness] = array();
-
             foreach ($linksCollection[$deepness-1] as $webUrl) {
                 $url = new Url($webUrl);
                 if ($this->shouldVisit($url)) {
-                    try {
-                        $linksCollection[$deepness] += $this->visit(
-                            new WebResource($url, $this->httpClient)
-                        );
-                    } catch (\Exception $e) { }
+                    $linksCollection[$deepness] += $this->visit(
+                        new WebResource($url, $this->httpClient)
+                    );
                 }
             }
         }

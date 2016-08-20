@@ -6,6 +6,9 @@
 
 This package provides all of the components to crawl a website and build and write sitemaps file.
 
+Example of console application using the library: [dmoraschi/sitemap-app](https://github.com/danielemoraschi/sitemap-app)
+
+
 ## Installation
 
 Run the following command and provide the latest stable version (e.g v1.0.0):

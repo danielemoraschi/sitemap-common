@@ -12,14 +12,14 @@ namespace SiteMap\Test\Parse;
 
 
 use SiteMap\Http\Url;
-use SiteMap\Parse\RegexLinkParser;
+use SiteMap\Parse\RegexBasedLinkParser;
 
 class RegexLinkParserTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testParser()
     {
-        $parser = new RegexLinkParser();
+        $parser = new RegexBasedLinkParser();
         $content = $this->getHtml();
 
         $parser->setContent(new Url('http://google.com'), $content);

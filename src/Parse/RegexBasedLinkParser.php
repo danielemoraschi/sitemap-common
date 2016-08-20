@@ -13,7 +13,7 @@ namespace SiteMap\Parse;
 use SiteMap\Http\Url;
 use SiteMap\Http\UrlUtil;
 
-final class RegexLinkParser implements LinkParser
+final class RegexBasedLinkParser implements LinkParser
 {
     /**
      * @var string  REGEX

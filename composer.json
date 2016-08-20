@@ -1,8 +1,14 @@
 {
     "name": "dmoraschi/sitemap-common",
     "type": "library",
-    "description": "sitemap-common",
-    "keywords": [],
+    "description": "Sitemap generator and crawler library",
+    "keywords": [
+        "crawler",
+        "crawl",
+        "link",
+        "website",
+        "sitemap"
+    ],
     "license": "MIT",
     "authors": [
         {

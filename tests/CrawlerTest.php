@@ -17,7 +17,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use SiteMap\Crawler;
 use SiteMap\Http\Url;
-use SiteMap\Parse\RegexLinkParser;
+use SiteMap\Parse\RegexBasedLinkParser;
 use SiteMap\Policy\SameHostPolicy;
 use SiteMap\Policy\UniqueUrlPolicy;
 use SiteMap\Policy\ValidExtensionPolicy;
@@ -32,7 +32,7 @@ class CrawlerTest extends \PHPUnit_Framework_TestCase
 
         $crawler = new Crawler(
             $baseUrl,
-            new RegexLinkParser(),
+            new RegexBasedLinkParser(),
             new Client()
         );
 
@@ -44,7 +44,7 @@ class CrawlerTest extends \PHPUnit_Framework_TestCase
 
         $crawler2 = new Crawler(
             $baseUrl,
-            new RegexLinkParser(),
+            new RegexBasedLinkParser(),
             new Client()
         );
 

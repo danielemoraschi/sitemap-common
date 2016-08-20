@@ -41,6 +41,7 @@ class SiteMapGenerator
 
     /**
      * SiteMapGenerator constructor.
+     *
      * @param Writer $writer
      * @param Template $template
      */
@@ -52,6 +53,8 @@ class SiteMapGenerator
     }
 
     /**
+     * Set the SiteMapUrlCollection for the sitemap.
+     *
      * @param SiteMapUrlCollection $siteMapUrlCollection
      * @return SiteMapUrlCollection
      */
@@ -61,6 +64,8 @@ class SiteMapGenerator
     }
 
     /**
+     * Add a SiteMapUrl to the sitemap.
+     *
      * @param SiteMapUrl $siteMapUrl
      * @return SiteMapUrl
      */
@@ -70,10 +75,12 @@ class SiteMapGenerator
     }
 
     /**
+     * Add a array of SiteMapUrl to the sitemap.
+     *
      * @param array $urls
      * @return $this
      */
-    public function add(array $urls = array())
+    public function addSiteMapUrls(array $urls = array())
     {
         /** @var SiteMapUrl $siteMapUrl */
         foreach ($urls as $siteMapUrl) {
@@ -84,6 +91,8 @@ class SiteMapGenerator
     }
 
     /**
+     * Add URL to the sitemap
+     *
      * @param mixed string|Url $url
      * @param $frequency
      * @param $priority
@@ -103,6 +112,8 @@ class SiteMapGenerator
     }
 
     /**
+     * Generate the sitemap.
+     *
      * @return mixed
      */
     public function execute()

@@ -52,6 +52,7 @@ class WebResource implements HttpResource
 
     /**
      * @return string
+     * @throws \Exception
      */
     public function getContent()
     {
@@ -64,6 +65,7 @@ class WebResource implements HttpResource
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     private function fetchContent()
     {

@@ -43,6 +43,7 @@ class Crawler
 
     /**
      * Crawler constructor.
+     *
      * @param Url $baseUrl
      * @param LinkParser $parser
      * @param ClientInterface $httpClient
@@ -55,6 +56,8 @@ class Crawler
     }
 
     /**
+     * Add a new crawler policy.
+     *
      * @param $key
      * @param Policy $policy
      */
@@ -64,6 +67,9 @@ class Crawler
     }
 
     /**
+     * Set crawler policies to follow the URLs
+     * of a webpage.
+     *
      * @param array $policies
      */
     public function setPolicies(array $policies)
@@ -74,10 +80,13 @@ class Crawler
     }
 
     /**
+     * Will return true|false if the URL passed as argument should
+     * be visited by the crawler based upon policies.
+     *
      * @param Url $url
      * @return bool
      */
-    protected function shouldVisit(Url $url)
+    public function shouldVisit(Url $url)
     {
         /** @var Policy $policy */
         foreach ($this->policies as $key => $policy) {
@@ -85,29 +94,40 @@ class Crawler
                 return false;
             }
         }
-
         return true;
     }
 
     /**
+     * Visit a webpage.
+     *
+     * @TODO handle the exception
      * @param HttpResource $httpResource
      * @return array
      */
     private function visit(HttpResource $httpResource)
     {
-        $webPage = $httpResource->getContent();
+        try {
+            $webPage = $httpResource->getContent();
+        } catch (\Exception $e) {
+            return array();
+        }
+
         $this->parser->setContent($httpResource->getURI(), $webPage);
         $links = $this->parser->findLinks();
         return $links;
     }
 
     /**
+     * This method will return the array of visited URLs by the crawler
+     * based upon specified deep scan and policies.
+     *
      * @param $maxDeep
      * @return array|mixed
      */
     public function crawl($maxDeep = 1)
     {
         $deepness = 0;
+        $maxDeep = abs((int)$maxDeep);
         $linksCollection = array_fill(0, $maxDeep+1, []);
 
         $linksCollection[0] = array($this->baseUrl->getWebUrl());

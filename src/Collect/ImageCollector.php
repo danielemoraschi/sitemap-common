@@ -55,7 +55,7 @@ class ImageCollector implements Collector
      */
     public function collect()
     {
-        if(! $this->data[$this->url->getWebUrl()]) {
+        if(! isset($this->data[$this->url->getWebUrl()])) {
             $this->data[$this->url->getWebUrl()] = [];
         }
 

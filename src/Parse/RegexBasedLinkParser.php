@@ -13,7 +13,7 @@ namespace SiteMap\Parse;
 use SiteMap\Http\Url;
 use SiteMap\Http\UrlUtil;
 
-final class RegexBasedLinkParser implements LinkParser
+final class RegexBasedLinkParser implements LinkParser, Parser
 {
     /**
      * @var string  REGEX
@@ -52,13 +52,13 @@ final class RegexBasedLinkParser implements LinkParser
      * @return array
      */
     public function findLinks() {
-        return $this->findAllLinks();
+        return $this->parse();
     }
 
     /**
      * @return array
      */
-    private function findAllLinks() {
+    public function parse() {
         if (empty($this->pages) && preg_match_all(
             "/" . self::REGEX . "/siU",
             $this->webPageContent,

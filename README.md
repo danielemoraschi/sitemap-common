@@ -89,10 +89,30 @@ $crawler->setPolicies([
     'url'  => new UniqueUrlPolicy(),
     'ext'  => new ValidExtensionPolicy(),
 ]);
+// or
+$crawler->setPolicy('host', new SameHostPolicy($baseUrl));
 ```
+`SameHostPolicy`, `UniqueUrlPolicy`, `ValidExtensionPolicy` are provided with the library, you can define your own policies by implementing the interface `Policy`.
 
 Calling the function `crawl` the object will start from the base url in the contructor and crawl all the web pages with the specified depth passed as a argument.
 The function will return with the array of all unique visited `Url`'s:
 ```php
 $urls = $crawler->crawl($deep);
 ```
+
+You can also instruct the `Crawler` to collect custom data while visiting the web pages by adding `Collector`'s to the main object:
+```php
+$crawler->setCollectors([
+    'images' => new ImageCollector()
+]);
+// or
+$crawler->setCollector('images', new ImageCollector());
+```
+And then retrive the collected data:
+```php
+$crawler->crawl($deep);
+
+$imageCollector = $crawler->getCollector('images');
+$data = $imageCollector->getCollectedData();
+```
+`ImageCollector` is provided by the library, you can define your own collector by implementing the interface `Collector`.

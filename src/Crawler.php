@@ -12,6 +12,7 @@ namespace SiteMap;
 
 
 use GuzzleHttp\ClientInterface;
+use SiteMap\Collect\Collector;
 use SiteMap\Http\HttpResource;
 use SiteMap\Http\WebResource;
 use SiteMap\Http\Url;
@@ -40,6 +41,11 @@ class Crawler
      * @var array
      */
     private $policies = [];
+
+    /**
+     * @var array
+     */
+    private $collectors = [];
 
     /**
      * Crawler constructor.
@@ -74,8 +80,52 @@ class Crawler
      */
     public function setPolicies(array $policies)
     {
+        /**
+         * @var string $key
+         * @var Policy $policy
+         */
         foreach ($policies as $key => $policy) {
             $this->setPolicy($key, $policy);
+        }
+    }
+
+    /**
+     * Set a crawler collector.
+     *
+     * @param $key
+     * @param Collector $collector
+     */
+    public function setCollector($key, Collector $collector)
+    {
+        $this->collectors[(string)$key] = $collector;
+    }
+
+    /**
+     * Return a previously set crawler collector.
+     *
+     * @param $key
+     * @return Collector|null
+     */
+    public function getCollector($key)
+    {
+        return isset($this->collectors[(string)$key])
+            ? $this->collectors[(string)$key]
+            : null;
+    }
+
+    /**
+     * Set crawler collectors.
+     *
+     * @param array $collectors
+     */
+    public function setCollectors(array $collectors)
+    {
+        /**
+         * @var string $key
+         * @var Collector $collector
+         */
+        foreach ($collectors as $key => $collector) {
+            $this->setCollector($key, $collector);
         }
     }
 
@@ -98,13 +148,28 @@ class Crawler
     }
 
     /**
+     * Will return collect the data based on added collector rules.
+     *
+     * @param Url $url
+     * @param $content
+     */
+    public function shouldCollect(Url $url, $content)
+    {
+        /** @var Collector $collector */
+        foreach ($this->collectors as $key => $collector) {
+            $collector->setContent($url, $content);
+            $collector->collect();
+        }
+    }
+
+    /**
      * Visit a webpage.
      *
      * @TODO handle the exception
      * @param HttpResource $httpResource
      * @return array
      */
-    private function visit(HttpResource $httpResource)
+    private function visitAndCollect(HttpResource $httpResource)
     {
         try {
             $webPage = $httpResource->getContent();
@@ -114,6 +179,9 @@ class Crawler
 
         $this->parser->setContent($httpResource->getURI(), $webPage);
         $links = $this->parser->findLinks();
+
+        $this->shouldCollect($httpResource->getURI(), $webPage);
+
         return $links;
     }
 
@@ -137,7 +205,7 @@ class Crawler
             foreach ($linksCollection[$deepness-1] as $webUrl) {
                 $url = new Url($webUrl);
                 if ($this->shouldVisit($url)) {
-                    $linksCollection[$deepness] += $this->visit(
+                    $linksCollection[$deepness] += $this->visitAndCollect(
                         new WebResource($url, $this->httpClient)
                     );
                 }

@@ -15,6 +15,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use SiteMap\Collect\ImageCollector;
 use SiteMap\Crawler;
 use SiteMap\Http\Url;
 use SiteMap\Parse\RegexBasedLinkParser;
@@ -61,5 +62,34 @@ class CrawlerTest extends \PHPUnit_Framework_TestCase
         $links2 = $crawler2->crawl(2);
         
         $this->assertTrue(count($links2) > count($links));
+    }
+
+    public function testCollector()
+    {
+        $baseUrl = new Url('http://google.com');
+
+        $crawler = new Crawler(
+            $baseUrl,
+            new RegexBasedLinkParser(),
+            new Client()
+        );
+
+        $crawler->setPolicies([
+            'host' => new SameHostPolicy($baseUrl),
+            'url'  => new UniqueUrlPolicy(),
+            'ext'  => new ValidExtensionPolicy(),
+        ]);
+
+        $crawler->setCollectors([
+            'images' => new ImageCollector()
+        ]);
+
+        $crawler->crawl(1);
+
+        $collected = $crawler->getCollector('images');
+        $data = $collected->getCollectedData();
+
+        $this->assertTrue(count($data) > 0);
+        $this->assertTrue(count($data['http://google.com']) > 0);
     }
 }
